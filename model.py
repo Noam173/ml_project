@@ -2,6 +2,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
 from keras.callbacks import EarlyStopping
 from plot import plot_training as plt
+import tensorflow as tf
 
 
 def create_model(train, val):
