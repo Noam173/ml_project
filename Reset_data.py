@@ -20,20 +20,17 @@ def create_directory(dataset_path: str) -> str:
 
     '''
     collect()
-    if (os.path.exists(dataset_path)):
+    dataset_path=os.path.expanduser(dataset_path)
+    if os.path.exists(f'{dataset_path}/classes') and os.path.exists(f'{dataset_path}/test'):
+        shutil.rmtree(f'{dataset_path}/classes')
+        shutil.rmtree(f'{dataset_path}/test')
+    
+    os.mkdir(f'{dataset_path}/classes')
+    os.mkdir(f'{dataset_path}/test')
 
-        csv=glob(f'{dataset_path}/*.csv')
-        csv.remove(f'{dataset_path}/test.csv')
-        csv.remove(f'{dataset_path}/train.csv')
-        
-        list=[f'{dataset_path}/train/',f'{dataset_path}/val/']
-        for x in list:
-            shutil.rmtree(x, ignore_errors=True)
-        for x in csv:
-            os.remove(x)
+    shutil.copytree(f'{dataset_path}/Test', f'{dataset_path}/test/Test')
 
-        print(f'Data sources: data/{os.listdir(dataset_path)}')
-        os.mkdir(f'{dataset_path}/train')
-        os.mkdir(f'{dataset_path}/val')
+    os.mkdir(f'{dataset_path}/classes/ai')
+    os.mkdir(f'{dataset_path}/classes/real')
 
-    return f'{dataset_path}/train', f'{dataset_path}/val'
+    return dataset_path
