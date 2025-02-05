@@ -21,14 +21,16 @@ def create_directory(dataset_path: str) -> str:
     '''
     collect()
     dataset_path=os.path.expanduser(dataset_path)
-    if os.path.exists(f'{dataset_path}/classes') and os.path.exists(f'{dataset_path}/test'):
+    
+    if os.path.exists(f'{dataset_path}/classes'):
         shutil.rmtree(f'{dataset_path}/classes')
+    if os.path.exists(f'{dataset_path}/test'):
         shutil.rmtree(f'{dataset_path}/test')
     
     os.mkdir(f'{dataset_path}/classes')
     os.mkdir(f'{dataset_path}/test')
 
-    shutil.copytree(f'{dataset_path}/Test', f'{dataset_path}/test/Test')
+    shutil.copytree(f'{dataset_path}/test_data_v2', f'{dataset_path}/test/Test')
 
     os.mkdir(f'{dataset_path}/classes/ai')
     os.mkdir(f'{dataset_path}/classes/real')

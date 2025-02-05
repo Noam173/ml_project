@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
+from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization
 from keras.callbacks import EarlyStopping
 from plot import plot_training as plt
 import tensorflow as tf
@@ -15,15 +15,21 @@ def create_model(train, val):
     
     model = Sequential()
     
-    model.add(Conv2D(16, (3,3), 1, activation='relu', input_shape=(256,256,3)))
+    model.add(Conv2D(32, (3,3), 1, padding='same', activation='relu', input_shape=(128, 128, 3)))
     
+    model.add(BatchNormalization())
+    
+    model.add(Conv2D(32, (3,3), padding='same', activation='relu'))
+
+    BatchNormalization()
     model.add(MaxPooling2D())
+    Dropout(0.2)
     
-    model.add(Conv2D(32, (3,3), activation='relu'))
+    model.add(Conv2D(64, (3,3), padding='same', activation='relu'))
     
-    model.add(MaxPooling2D())
-    
-    model.add(Conv2D(16, (3,3), activation='relu'))
+    BatchNormalization()
+
+    model.add(Conv2D(64, (3,3), padding='same', activation='relu'))
     
     model.add(MaxPooling2D())
     
@@ -36,7 +42,7 @@ def create_model(train, val):
 
     model.summary()
 
-    hist = model.fit(train, epochs=3, 
+    hist = model.fit(train, epochs=20, 
                      validation_data=val, 
                      callbacks=[early_stopping])
 

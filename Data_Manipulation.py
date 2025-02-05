@@ -23,18 +23,18 @@ def split_data(train_path_csv: str, path) -> None:
     ai=path[path['label']==1]
         
     for i in real.file_name:
-        shutil.copy(f'{dataset_path}/train_data/{i}', f'{dataset_path}/classes/real')
+        shutil.copy(f'{dataset_path}/{i}', f'{dataset_path}/classes/real')
 
     for i in ai.file_name:
-        shutil.copy(f'{dataset_path}/train_data/{i}', f'{dataset_path}/classes/ai')
+        shutil.copy(f'{dataset_path}/{i}', f'{dataset_path}/classes/ai')
 
     preprocess_data(f'{dataset_path}/classes/', f'{dataset_path}/test/')
     
 
 def preprocess_data(train_path: str, test_path: str) -> None:
 
-    data=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/classes/')
-    test=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/test/')
+    data=tf.keras.utils.image_dataset_from_directory(train_path, image_size=(128,128))
+    test=tf.keras.utils.image_dataset_from_directory(test_path, image_size=(128,128))
 
     data=data.map(lambda x,y: (x/255,y))
     test=test.map(lambda x,y: (x/255,y))
