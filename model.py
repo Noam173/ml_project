@@ -40,4 +40,4 @@ def create_model(train, val):
                      validation_data=val, 
                      callbacks=[early_stopping])
 
-        plt(hist.history)
+    plt(hist.history)
