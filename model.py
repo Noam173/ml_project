@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization
+from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization, l2
 from keras.callbacks import EarlyStopping
 from plot import plot_training as plt
 import tensorflow as tf
@@ -21,20 +21,18 @@ def create_model(train, val):
     
     model.add(Conv2D(32, (3,3), padding='same', activation='relu'))
 
-    BatchNormalization()
+    model.add(BatchNormalization())
     model.add(MaxPooling2D())
-    Dropout(0.2)
     
     model.add(Conv2D(64, (3,3), padding='same', activation='relu'))
     
-    BatchNormalization()
+    model.add(BatchNormalization())
 
-    model.add(Conv2D(64, (3,3), padding='same', activation='relu'))
-    
     model.add(MaxPooling2D())
-    
+
+    model.add(Dropout(0.3))
     model.add(Flatten())
-    model.add(Dense(256, activation='relu'))
+    model.add(Dense(128, activation='relu', kernel_regularizer=l2(0.01)))
     model.add(Dense(1, activation='sigmoid'))
 
 
