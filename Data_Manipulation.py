@@ -3,6 +3,7 @@ import shutil
 from Reset_data import create_directory
 import tensorflow as tf
 from model import create_model as model
+from gc import collect
 
 def split_data(train_path_csv: str, path) -> None:
     '''
@@ -47,6 +48,9 @@ def preprocess_data(train_path: str, test_path: str) -> None:
     train=data.take(train_size)
     val=data.skip(train_size).take(val_size)
 
+    del data, test
+    collect()
+    
     train = train.prefetch(tf.data.experimental.AUTOTUNE)
     val = val.prefetch(tf.data.experimental.AUTOTUNE)
     test=test.prefetch(tf.data.experimental.AUTOTUNE)
