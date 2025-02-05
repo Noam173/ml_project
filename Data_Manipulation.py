@@ -33,8 +33,8 @@ def split_data(train_path_csv: str, path) -> None:
 
 def preprocess_data(train_path: str, test_path: str) -> None:
 
-    data=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/classes/', image_size=(512,512), batch_size=16)
-    test=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/test/', image_size=(512,512))
+    data=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/classes/')
+    test=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/test/')
 
     data=data.map(lambda x,y: (x/255,y))
     test=test.map(lambda x,y: (x/255,y))
