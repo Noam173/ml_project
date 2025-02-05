@@ -1,5 +1,6 @@
 from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization, l2
+from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout, BatchNormalization
+from keras.regularizers import l2
 from keras.callbacks import EarlyStopping
 from plot import plot_training as plt
 import tensorflow as tf
