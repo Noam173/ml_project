@@ -31,9 +31,9 @@ def split_data(train_path_csv: str, path) -> None:
     preprocess_data(f'{dataset_path}/classes/', f'{dataset_path}/test/')
     
 
-def preprocess_data(train_path: str, test_path: str)
+def preprocess_data(train_path: str, test_path: str) -> None:
 
-    data=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/classes/', image_size=(512,512))
+    data=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/classes/', image_size=(512,512), batch_size=16)
     test=tf.keras.utils.image_dataset_from_directory('/home/noam/scripts/test/', image_size=(512,512))
 
     data=data.map(lambda x,y: (x/255,y))
@@ -46,5 +46,9 @@ def preprocess_data(train_path: str, test_path: str)
 
     train=data.take(train_size)
     val=data.skip(train_size).take(val_size)
+
+    train = train.prefetch(tf.data.experimental.AUTOTUNE)
+    val = val.prefetch(tf.data.experimental.AUTOTUNE)
+    test=test.prefetch(tf.data.experimental.AUTOTUNE)
 
     model(train, val)

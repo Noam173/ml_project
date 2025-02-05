@@ -7,22 +7,28 @@ import tensorflow as tf
 
 def create_model(train, val):
 
+    early_stopping = EarlyStopping(monitor="val_loss",
+                                   patience=1,         
+                                   restore_best_weights=True,  
+                                   verbose=1)
+
+    
     model = Sequential()
     
     model.add(Conv2D(16, (3,3), activation='relu', input_shape=(512,512,3)))
     
-    model.add(MaxPooling2D())
+    model.add(MaxPooling2D(4,4))
+    
+    model.add(Conv2D(32, (3,3), activation='relu'))
+    
+    model.add(MaxPooling2D(4,4))
     
     model.add(Conv2D(32, (3,3), activation='relu'))
     
     model.add(MaxPooling2D())
     
-    model.add(Conv2D(16, (3,3), activation='relu'))
-    
-    model.add(MaxPooling2D())
-    
     model.add(Flatten())
-    model.add(Dense(512, activation='relu'))
+    model.add(Dense(32, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
 
 
@@ -30,7 +36,7 @@ def create_model(train, val):
 
     model.summary()
 
-    hist = model.fit(train, epochs=20, 
+    hist = model.fit(train, epochs=5, 
                      validation_data=val, 
                      callbacks=[early_stopping])
 
