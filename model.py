@@ -8,7 +8,7 @@ import tensorflow as tf
 def create_model(train, val):
 
     early_stopping = EarlyStopping(monitor="val_loss",
-                                   patience=1,         
+                                   patience=5,         
                                    restore_best_weights=True,  
                                    verbose=1)
 
