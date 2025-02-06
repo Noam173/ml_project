@@ -35,8 +35,10 @@ def create_model(train, val):
     model.add(Dense(128, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
 
-    collect()
     model.compile('adam', loss=tf.losses.BinaryCrossentropy(), metrics=['accuracy'])
+
+    del train, val
+    collect()
 
     model.summary()
 
