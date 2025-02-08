@@ -36,16 +36,16 @@ def split_data(train_path_csv: str, path) -> None:
 
 def preprocess_data(train_path: str, test_path: str) -> None:
 
-    data=tf.keras.utils.image_dataset_from_directory(train_path, image_size=(128,128))
-    #test=tf.keras.utils.image_dataset_from_directory(test_path, image_size=(128,128))
+    data=tf.keras.utils.image_dataset_from_directory(train_path, image_size=(256,256))
+    
 
     data=data.map(lambda x,y: (x/255,y))
-    #test=test.map(lambda x,y: (x/255,y))
+    
 
     size=len(data)
     
-    train_size=int(size*.8)
-    val_size=int(size*.2+1)
+    train_size=round(size*.8)
+    val_size=round(size*.2)
 
     train=data.take(train_size)
     val=data.skip(train_size).take(val_size)
@@ -53,8 +53,8 @@ def preprocess_data(train_path: str, test_path: str) -> None:
     del data
     collect()
     
-    train = train.prefetch(tf.data.experimental.AUTOTUNE)
-    val = val.prefetch(tf.data.experimental.AUTOTUNE)
-    #test=test.prefetch(tf.data.experimental.AUTOTUNE)
+    train = train.cache().prefetch(tf.data.experimental.AUTOTUNE)
+    val = val.cache().prefetch(tf.data.experimental.AUTOTUNE)
+    
 
     model(train, val)
