@@ -18,12 +18,13 @@ def split_data(train_path_csv: str, path) -> None:
 
     '''
     dataset_path, flag=create_directory(path)
-    path=pd.read_csv(train_path_csv)
-    
-    real=path[path['label']==0]
-    ai=path[path['label']==1]
         
     if flag:
+        path=pd.read_csv(train_path_csv)
+    
+        real=path[path['label']==0]
+        ai=path[path['label']==1]
+        
         for i in real.file_name:
             shutil.copy(f'{dataset_path}/{i}', f'{dataset_path}/classes/real')
 
