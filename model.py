@@ -5,7 +5,7 @@ from plot import plot_training as plt
 import tensorflow as tf
 
 
-def create_model(train, val):
+def create_model(train, val) -> None:
 
     early_stopping = EarlyStopping(monitor="val_loss",
                                    patience=5,         
