@@ -42,7 +42,7 @@ def preprocess_data(train_path: str, test_path: str) -> None:
     data=data.map(lambda x,y: (x/255,y))
     
 
-    size=len(data)
+    size = tf.data.experimental.cardinality(data).numpy()
     
     train_size=round(size*.8)
     val_size=round(size*.2)
