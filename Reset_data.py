@@ -19,10 +19,11 @@ def create_directory(dataset_path: str) -> str:
     '''
     collect()
     dataset_path=os.path.expanduser(dataset_path)
-    
+    Flag=False
     if not os.path.exists(f'{dataset_path}/classes'):
         os.mkdir(f'{dataset_path}/classes')
         os.mkdir(f'{dataset_path}/classes/ai')
         os.mkdir(f'{dataset_path}/classes/real')
+        Flag=True
 
-    return dataset_path
+    return dataset_path, Flag
