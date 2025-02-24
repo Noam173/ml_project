@@ -1,45 +1,48 @@
-from keras.models import Sequential
+import tensorflow as tf
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.layers import (
     Conv2D,
-    MaxPooling2D,
     Dense,
-    Flatten,
     Dropout,
     GlobalAveragePooling2D,
+    Input,
+    MaxPooling2D,
 )
-from keras.callbacks import EarlyStopping
+from keras.models import Sequential
+from keras.optimizers import Adam
 from plot import plot_training as plt
-import tensorflow as tf
 
 
 def create_model(train, val) -> None:
     early_stopping = EarlyStopping(
         monitor="val_loss", patience=5, restore_best_weights=True, verbose=1
     )
+    lr_schedule = ReduceLROnPlateau(
+        monitor="val_loss", factor=0.5, patience=3, min_lr=1e-6
+    )
 
     model = Sequential()
+    model.add(Input(shape=(224, 224, 3)))
 
-    model.add(Conv2D(16, (3, 3), 1, activation="relu", input_shape=(256, 256, 3)))
+    model.add(Conv2D(32, (3, 3), padding="same", activation="relu"))
+    model.add(Conv2D(64, (3, 3), padding="same", activation="relu"))
+    model.add(MaxPooling2D((2, 2), 2))
 
-    model.add(MaxPooling2D())
-
-    model.add(Conv2D(64, (3, 3), activation="relu"))
-    model.add(Dropout(0.2))
-    model.add(MaxPooling2D())
-
-    model.add(Conv2D(16, (3, 3), activation="relu"))
-
-    model.add(MaxPooling2D())
+    model.add(Conv2D(128, (3, 3), padding="same", activation="relu"))
+    model.add(MaxPooling2D((2, 2), 2))
 
     model.add(GlobalAveragePooling2D())
-    model.add(Dropout(0.4))
-    model.add(Dense(256, activation="relu"))
+    model.add(Dense(512, activation="relu"))
+    model.add(Dropout(0.5))
     model.add(Dense(1, activation="sigmoid"))
-
-    model.compile("adam", loss=tf.losses.BinaryCrossentropy(), metrics=["accuracy"])
-
     model.summary()
 
-    hist = model.fit(train, epochs=20, validation_data=val, callbacks=[early_stopping])
+    model.compile(
+        Adam(2e-4), loss=tf.losses.binary_crossentropy, metrics=["accuracy"]
+    )
+
+    hist = model.fit(
+        train, epochs=50, validation_data=val, callbacks=[early_stopping, lr_schedule]
+    )
 
     plt(hist.history)
