@@ -3,13 +3,11 @@
 from Data_Manipulation import split_data
 
 
-
 def main():
-    path='~/scripts'
+    path = "~/scripts"
 
-    split_data(f'{path}/train.csv', path)
+    split_data(f"{path}/train.csv", path)
 
-    
-    
-if __name__=='__main__':
+
+if __name__ == "__main__":
     main()
