@@ -5,8 +5,8 @@ Spyder Editor
 This is a temporary script file.
 """
 
-from gc import collect
 import os
+from gc import collect
 
 
 def create_directory(dataset_path: str) -> str:

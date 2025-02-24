@@ -1,12 +1,13 @@
-import pandas as pd
 import shutil
-from Reset_data import create_directory
-import tensorflow as tf
-from model import create_model as model
 from gc import collect
 
+import pandas as pd
+import tensorflow as tf
+from Reset_data import create_directory
+from test_model import create_model as model
 
-def split_data(train_path_csv: str, path) -> None:
+
+def split_data(train_path_csv: str, path) -> str:
     """
     Parameters
     ----------
@@ -23,39 +24,30 @@ def split_data(train_path_csv: str, path) -> None:
     if flag:
         path = pd.read_csv(train_path_csv)
 
-        real = path[path["label"] == 0]
-        ai = path[path["label"] == 1]
+        real = path[path["label"] == 0].file_name
+        ai = path[path["label"] == 1].file_name
 
-        for i in real.file_name:
+        for i in real:
             shutil.copy(f"{dataset_path}/{i}", f"{dataset_path}/classes/real")
 
-        for i in ai.file_name:
+        for i in ai:
             shutil.copy(f"{dataset_path}/{i}", f"{dataset_path}/classes/ai")
 
     collect()
 
-    preprocess_data(f"{dataset_path}/classes/", f"{dataset_path}/test/")
+    return f"{dataset_path}/classes"
 
 
-def preprocess_data(train_path: str, test_path: str) -> None:
+def preprocess_data(train_path: str, batch_size: int) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
-        train_path, image_size=(256, 256)
-    )
+        train_path, shuffle=True, seed=0, image_size=(224, 224), batch_size=batch_size
+    ).map(lambda x, y: (x / 255.0, y))
 
-    data = data.map(lambda x, y: (x / 255, y))
+    size = len(data)
 
-    size = tf.data.experimental.cardinality(data).numpy()
+    val_size = int(size * 0.3)
 
-    train_size = round(size * 0.8)
-    val_size = round(size * 0.2)
+    train = data.skip(val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
+    val = data.take(val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
 
-    train = data.take(train_size)
-    val = data.skip(train_size).take(val_size)
-
-    del data
-    collect()
-
-    train = train.cache().prefetch(tf.data.experimental.AUTOTUNE)
-    val = val.cache().prefetch(tf.data.experimental.AUTOTUNE)
-
-    model(train, val)
+    return train, val
