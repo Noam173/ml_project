@@ -38,9 +38,7 @@ def create_model(train, val) -> None:
     model.add(Dense(1, activation="sigmoid"))
     model.summary()
 
-    model.compile(
-        Adam(2e-4), loss=tf.losses.binary_crossentropy, metrics=["accuracy"]
-    )
+    model.compile(Adam(2e-4), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
 
     hist = model.fit(
         train, epochs=50, validation_data=val, callbacks=[early_stopping, lr_schedule]
