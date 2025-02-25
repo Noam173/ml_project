@@ -5,11 +5,11 @@ Spyder Editor
 This is a temporary script file.
 """
 
-import os
+from pathlib import Path
 from gc import collect
 
 
-def create_directory(dataset_path: str) -> str:
+def create_directory(path: str) -> str:
     """
 
 
@@ -20,12 +20,13 @@ def create_directory(dataset_path: str) -> str:
 
     """
     collect()
-    dataset_path = os.path.expanduser(dataset_path)
+    dataset_path = Path(path).parent.as_posix()
+    new_path = Path(f"{dataset_path}/classes")
     Flag = False
-    if not os.path.exists(f"{dataset_path}/classes"):
-        os.mkdir(f"{dataset_path}/classes")
-        os.mkdir(f"{dataset_path}/classes/ai")
-        os.mkdir(f"{dataset_path}/classes/real")
+    if not new_path.exists():
+        Path.mkdir(new_path)
+        Path.mkdir(f"{new_path}/ai")
+        Path.mkdir(f"{new_path}/real")
         Flag = True
 
     return dataset_path, Flag

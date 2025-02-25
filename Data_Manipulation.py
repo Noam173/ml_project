@@ -1,13 +1,12 @@
 import shutil
 from gc import collect
-
+from glob import glob
 import pandas as pd
 import tensorflow as tf
 from Reset_data import create_directory
-from test_model import create_model as model
 
 
-def split_data(train_path_csv: str, path) -> str:
+def split_data(path: str) -> str:
     """
     Parameters
     ----------
@@ -20,7 +19,7 @@ def split_data(train_path_csv: str, path) -> str:
 
     """
     dataset_path, flag = create_directory(path)
-
+    train_path_csv = glob(f"{dataset_path}/*.csv")[0]
     if flag:
         path = pd.read_csv(train_path_csv)
 
@@ -32,22 +31,25 @@ def split_data(train_path_csv: str, path) -> str:
 
         for i in ai:
             shutil.copy(f"{dataset_path}/{i}", f"{dataset_path}/classes/ai")
+    print("done")
 
     collect()
 
-    return f"{dataset_path}/classes"
 
-
-def preprocess_data(train_path: str, batch_size: int) -> None:
+def preprocess_data(train_path: str, model) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
-        train_path, shuffle=True, seed=0, image_size=(224, 224), batch_size=batch_size
+        train_path, shuffle=True, seed=0, image_size=(224, 224)
     ).map(lambda x, y: (x / 255.0, y))
 
     size = len(data)
 
-    val_size = int(size * 0.3)
+    train_size = round(size * 0.6)
+    val_size = round(size * 0.2)
 
-    train = data.skip(val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
-    val = data.take(val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
+    train = data.take(train_size).prefetch(buffer_size=tf.data.AUTOTUNE)
+    val = data.skip(train_size).take(val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
+    test = data.skip(train_size + val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
 
-    return train, val
+    model = tf.keras.models.load_model(model)
+
+    print(model.evaluate(test))

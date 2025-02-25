@@ -40,7 +40,7 @@ def create_model(train, val) -> None:
     model.compile(Adam(2e-4), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
 
     hist = model.fit(
-        train, epochs=50, validation_data=val, callbacks=[early_stopping, lr_schedule]
+        train, epochs=30, validation_data=val, callbacks=[early_stopping, lr_schedule]
     )
-
+    model.save("finished_model.keras")
     plt(hist.history)
