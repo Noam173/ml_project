@@ -29,6 +29,7 @@ def open_github() -> None:
 
 def open_pdf() -> None: ...
 
+
 window = ctk.CTk()
 window.title("Noam's project gui")
 window.geometry("862x519")
@@ -40,25 +41,39 @@ frame.pack(fill="both", expand=True, padx=20, pady=20)
 title = ctk.CTkLabel(frame, text="Welcome", font=("Arial Bold", 20))
 title.pack(pady=10)
 
-github_label = ctk.CTkButton(frame, text="Github", cursor="hand2", command=open_github, hover_color="purple")
+github_label = ctk.CTkButton(
+    frame, text="Github", cursor="hand2", command=open_github, hover_color="purple"
+)
 github_label.pack(side="left", padx=50)
 
-pdf_label = ctk.CTkButton(frame, text="pdf_book", cursor="hand2", command=open_pdf, hover_color="purple")
+pdf_label = ctk.CTkButton(
+    frame, text="pdf_book", cursor="hand2", command=open_pdf, hover_color="purple"
+)
 pdf_label.pack(side="right", padx=50)
 
-path_entry = ctk.CTkEntry(frame, placeholder_text="Load the and split the data", corner_radius=10)
+path_entry = ctk.CTkEntry(
+    frame, placeholder_text="Load the and split the data", corner_radius=10
+)
 path_entry.pack(pady=20, fill="x", padx=20)
 
 model_entry = ctk.CTkEntry(frame, placeholder_text="model's file", corner_radius=10)
 model_entry.pack(pady=20, fill="x", padx=20)
 
 path_button = ctk.CTkButton(
-    frame, text="Select the data's path", command=select_and_split, hover_color="purple", corner_radius=10
+    frame,
+    text="Select the data's path",
+    command=select_and_split,
+    hover_color="purple",
+    corner_radius=10,
 )
 path_button.pack(pady=10)
 
 model_button = ctk.CTkButton(
-    frame, text="Evaluate model", hover_color="purple", command=evaluate_model, corner_radius=10
+    frame,
+    text="Evaluate model",
+    hover_color="purple",
+    command=evaluate_model,
+    corner_radius=10,
 )
 model_button.pack(pady=10)
 
