@@ -1,8 +1,8 @@
-import webbrowser
 from pathlib import Path
 from tkinter import filedialog, messagebox
-
 import customtkinter as ctk
+import os
+from predict_images import predict_image
 from Data_Manipulation import *
 
 
@@ -23,11 +23,17 @@ def evaluate_model() -> None:
     preprocess_data(classes, output_path)
 
 
-def open_github() -> None:
-    webbrowser.open("https://github.com/Noamhotcoffee11/ml-project")
+def images() -> None:
+    global output_path
+    output_path = filedialog.askdirectory()
+    predict_image(output_path)
 
 
-def open_pdf() -> None: ...
+def image() -> None:
+    global output_path
+    output_path = filedialog.askopenfilename(filetypes=[("Image Files")])
+
+    predict_image(output_path)
 
 
 window = ctk.CTk()
@@ -41,15 +47,15 @@ frame.pack(fill="both", expand=True, padx=20, pady=20)
 title = ctk.CTkLabel(frame, text="Welcome", font=("Arial Bold", 20))
 title.pack(pady=10)
 
-github_label = ctk.CTkButton(
-    frame, text="Github", cursor="hand2", command=open_github, hover_color="purple"
+image_label = ctk.CTkButton(
+    frame, text="predict_image", cursor="hand2", command=image, hover_color="purple"
 )
-github_label.pack(side="left", padx=50)
+image_label.pack(side="left", padx=50)
 
-pdf_label = ctk.CTkButton(
-    frame, text="pdf_book", cursor="hand2", command=open_pdf, hover_color="purple"
+images_label = ctk.CTkButton(
+    frame, text="predict_iamges", cursor="hand2", command=images, hover_color="purple"
 )
-pdf_label.pack(side="right", padx=50)
+images_label.pack(side="right", padx=50)
 
 path_entry = ctk.CTkEntry(
     frame, placeholder_text="Load the and split the data", corner_radius=10
@@ -89,6 +95,5 @@ documention_text.insert(
 documention_text.insert("end", "\n")
 documention_text.insert("end", "GitHub (source code)\n")
 documention_text.insert("end", "\n")
-documention_text.insert("end", "pdf-book (documentation)\n")
 
 window.mainloop()
