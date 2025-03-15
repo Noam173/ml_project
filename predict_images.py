@@ -1,8 +1,4 @@
-from PIL import Image
-import os
 import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 def predict_image(img_dir: str) -> None:
