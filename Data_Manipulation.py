@@ -4,7 +4,6 @@ from glob import glob
 import pandas as pd
 import tensorflow as tf
 from Reset_data import create_directory
-from model import create_model as c_model
 
 
 def split_data(path: str) -> str:
