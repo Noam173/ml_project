@@ -4,6 +4,7 @@ from glob import glob
 import pandas as pd
 import tensorflow as tf
 from Reset_data import create_directory
+from model import create_model as c_model
 
 
 def split_data(path: str) -> str:
@@ -46,9 +47,12 @@ def preprocess_data(train_path: str, model) -> None:
     train_size = round(size * 0.6)
     val_size = round(size * 0.2)
 
-    train = data.take(train_size).prefetch(buffer_size=tf.data.AUTOTUNE)
-    val = data.skip(train_size).take(val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
-    test = data.skip(train_size + val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
+    test = data.skip(train_size + val_size).prefetch(tf.data.AUTOTUNE)
+
+    # train = data.take(train_size).prefetch(tf.data.AUTOTUNE)
+    # val = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE)
+
+    # c_model(train, val)
 
     model = tf.keras.models.load_model(model)
 

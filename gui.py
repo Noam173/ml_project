@@ -1,9 +1,9 @@
 from pathlib import Path
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
+
 import customtkinter as ctk
-import os
-from predict_images import predict_image
 from Data_Manipulation import *
+from predict_images import predict_image
 
 
 def select_and_split() -> None:
@@ -26,7 +26,7 @@ def evaluate_model() -> None:
 def images() -> None:
     global output_path
     output_path = filedialog.askdirectory()
-    predict_image(f'{output_path}/*')
+    predict_image(f"{output_path}/*")
 
 
 def image() -> None:
@@ -53,7 +53,11 @@ image_label = ctk.CTkButton(
 image_label.pack(side="left", padx=50)
 
 images_label = ctk.CTkButton(
-    frame, text="predict_images (folder)", cursor="hand2", command=images, hover_color="purple"
+    frame,
+    text="predict_images (folder)",
+    cursor="hand2",
+    command=images,
+    hover_color="purple",
 )
 images_label.pack(side="right", padx=50)
 

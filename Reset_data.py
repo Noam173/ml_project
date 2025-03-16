@@ -1,24 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
-
-from pathlib import Path
 from gc import collect
+from pathlib import Path
 
 
 def create_directory(path: str) -> str:
-    """
-
-
-    Returns
-    -------
-    string.
-        Reset the content in the folders for a clean restart
-
-    """
     collect()
     dataset_path = Path(path).parent.as_posix()
     new_path = Path(f"{dataset_path}/classes")
