@@ -16,5 +16,6 @@ def predict_image(img_dir: str) -> None:
 
     pred = model.predict(dataset)
 
-    print("the model's predictions:")
-    [print("real" if pred.round()[i] == 1 else "ai") for i in range(len(files))]
+    for i, file in enumerate(files.as_numpy_iterator()):
+        print(f'{file} is:')
+        print('real' if pred.round()[i] == 1 else 'ai')
