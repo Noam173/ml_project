@@ -32,7 +32,6 @@ def images() -> None:
 def image() -> None:
     global output_path
     output_path = filedialog.askopenfilename()
-
     predict_image(output_path)
 
 
