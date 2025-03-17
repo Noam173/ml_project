@@ -16,13 +16,10 @@ def predict_image(img_dir: str) -> None:
     model = tf.keras.models.load_model("finished_model.keras")
 
     pred = model.predict(dataset)
-    
-    for i, file in enumerate(files.as_numpy_iterator()):
 
-        file=file.decode("utf-8")
+    for i, file in enumerate(files.as_numpy_iterator()):
+        file = file.decode("utf-8")
         plt.imshow(plt.imread(file))
-        print('real' if pred.round()[i] == 1 else 'ai')
+        print("real" if pred.round()[i] == 1 else "ai")
         plt.show()
-        print('='*300)
-                
-        
+        print("=" * 300)
