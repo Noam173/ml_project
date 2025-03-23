@@ -38,20 +38,17 @@ def split_data(path: str) -> str:
 
 def preprocess_data(train_path: str, model) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
-        train_path, shuffle=True, seed=0, image_size=(224, 224)
+        train_path, shuffle=True, seed=42, image_size=(224, 224)
     ).map(lambda x, y: (x / 255.0, y))
 
     size = len(data)
 
-    train_size = round(size * 0.6)
+    train_size = round(size * 0.7)
     val_size = round(size * 0.2)
 
     test = data.skip(train_size + val_size).prefetch(tf.data.AUTOTUNE)
-
     # train = data.take(train_size).prefetch(tf.data.AUTOTUNE)
     # val = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE)
-
-    # c_model(train, val)
 
     model = tf.keras.models.load_model(model)
 
