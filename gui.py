@@ -34,11 +34,12 @@ def image() -> None:
     output_path = filedialog.askopenfilename()
     predict_image(output_path)
 
-
+ctk.set_appearance_mode("dark")
 window = ctk.CTk()
 window.title("Noam's project gui")
 window.geometry("862x519")
-window.resizable(False, False)
+window.resizable(True, True)
+window.configure(bg="black")
 
 frame = ctk.CTkFrame(window, corner_radius=15)
 frame.pack(fill="both", expand=True, padx=20, pady=20)
