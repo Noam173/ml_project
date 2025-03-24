@@ -36,7 +36,7 @@ def split_data(path: str) -> str:
     collect()
 
 
-def preprocess_data(train_path: str, model) -> None:
+def preprocess_data(train_path: str) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
         train_path, shuffle=True, seed=42, image_size=(224, 224)
     ).map(lambda x, y: (x / 255.0, y))
@@ -50,6 +50,6 @@ def preprocess_data(train_path: str, model) -> None:
     # train = data.take(train_size).prefetch(tf.data.AUTOTUNE)
     # val = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE)
 
-    model = tf.keras.models.load_model(model)
+    model = tf.keras.models.load_model('finished_model.keras')
 
     print(model.evaluate(test))
