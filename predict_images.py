@@ -8,7 +8,7 @@ def predict_image(img_dir: str) -> None:
     def image(img_dir):
         img = tf.io.read_file(img_dir)
         try:
-            img = tf.image.decode_jpeg(img, channels=3)
+            img = tf.image.decode_png(img, channels=3)
         except:
             img = tf.image.decode_bmp(img, channels=3)
         img = tf.image.resize(img, (224, 224)) / 255
