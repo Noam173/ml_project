@@ -17,10 +17,9 @@ def select_and_split() -> None:
 def evaluate_model() -> None:
     global output_path
     classes = f"{Path(output_path).parent}/classes"
-    output_path = filedialog.askopenfilename(filetypes=[("Keras Model", "*.keras")])
     model_entry.delete(0, "end")
     model_entry.insert(0, output_path)
-    preprocess_data(classes, output_path)
+    preprocess_data(classes)
 
 
 def images() -> None:
@@ -33,6 +32,7 @@ def image() -> None:
     global output_path
     output_path = filedialog.askopenfilename()
     predict_image(output_path)
+
 
 ctk.set_appearance_mode("dark")
 window = ctk.CTk()

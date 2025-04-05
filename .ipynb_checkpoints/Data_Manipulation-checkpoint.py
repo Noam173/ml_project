@@ -1,23 +1,12 @@
 import shutil
-from gc import collect
 from glob import glob
-import pandas as pd
 import tensorflow as tf
-from Reset_data import create_directory
+from Reset_data import *
+from sklearn.metrics import confusion_matrix
+from plot import *
 
 
 def split_data(path: str) -> str:
-    """
-    Parameters
-    ----------
-    train_path : string.
-        the path to the original dataset's DataFrame file to prepare it for splitting.
-
-    Returns
-    -------
-    None.
-
-    """
     dataset_path, flag = create_directory(path)
     train_path_csv = glob(f"{dataset_path}/*.csv")[0]
     if flag:
@@ -36,20 +25,33 @@ def split_data(path: str) -> str:
     collect()
 
 
-def preprocess_data(train_path: str, model) -> None:
+def preprocess_data(classes_path: str) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
-        train_path, shuffle=True, seed=0, image_size=(224, 224)
+        classes_path, shuffle=True, seed=42, image_size=(224, 224)
     ).map(lambda x, y: (x / 255.0, y))
 
     size = len(data)
 
-    train_size = round(size * 0.6)
+    train_size = round(size * 0.7)
     val_size = round(size * 0.2)
 
-    train = data.take(train_size).prefetch(buffer_size=tf.data.AUTOTUNE)
-    val = data.skip(train_size).take(val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
-    test = data.skip(train_size + val_size).prefetch(buffer_size=tf.data.AUTOTUNE)
+    test = data.skip(train_size + val_size).prefetch(tf.data.AUTOTUNE)
+    train = data.take(train_size).prefetch(tf.data.AUTOTUNE)
+    val = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE)
 
-    model = tf.keras.models.load_model(model)
+    print(con_matrix(test))
 
-    print(model.evaluate(test))
+
+def con_matrix(dataset: tf.data.Dataset) -> None:
+    model = tf.keras.models.load_model("finished_model.keras")
+    pred = []
+    labels = []
+    for x, y in dataset.rebatch(16 * len(dataset)):
+        pred.extend(model.predict(x).round())
+        labels.extend(y)
+
+    labels = np.array(labels).flatten()
+    pred = np.array(pred).flatten()
+
+    matrix = confusion_matrix(labels, pred)
+    plot_con_matrix(matrix)

@@ -1,9 +1,9 @@
 from pathlib import Path
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
+
 import customtkinter as ctk
-import os
-from predict_images import predict_image
 from Data_Manipulation import *
+from predict_images import predict_image
 
 
 def select_and_split() -> None:
@@ -17,29 +17,29 @@ def select_and_split() -> None:
 def evaluate_model() -> None:
     global output_path
     classes = f"{Path(output_path).parent}/classes"
-    output_path = filedialog.askopenfilename(filetypes=[("Keras Model", "*.keras")])
     model_entry.delete(0, "end")
     model_entry.insert(0, output_path)
-    preprocess_data(classes, output_path)
+    preprocess_data(classes)
 
 
 def images() -> None:
     global output_path
     output_path = filedialog.askdirectory()
-    predict_image(f'{output_path}/*')
+    predict_image(f"{output_path}/*")
 
 
 def image() -> None:
     global output_path
     output_path = filedialog.askopenfilename()
-
     predict_image(output_path)
 
 
+ctk.set_appearance_mode("dark")
 window = ctk.CTk()
 window.title("Noam's project gui")
 window.geometry("862x519")
-window.resizable(False, False)
+window.resizable(True, True)
+window.configure(bg="black")
 
 frame = ctk.CTkFrame(window, corner_radius=15)
 frame.pack(fill="both", expand=True, padx=20, pady=20)
@@ -53,7 +53,11 @@ image_label = ctk.CTkButton(
 image_label.pack(side="left", padx=50)
 
 images_label = ctk.CTkButton(
-    frame, text="predict_images (folder)", cursor="hand2", command=images, hover_color="purple"
+    frame,
+    text="predict_images (folder)",
+    cursor="hand2",
+    command=images,
+    hover_color="purple",
 )
 images_label.pack(side="right", padx=50)
 
