@@ -46,7 +46,7 @@ def con_matrix(dataset: tf.data.Dataset) -> None:
     model = tf.keras.models.load_model("finished_model.keras")
     pred = []
     labels = []
-    for x, y in dataset.rebatch(16 * len(dataset)):
+    for x, y in dataset.rebatch(len(dataset)):
         pred.extend(model.predict(x).round())
         labels.extend(y)
 

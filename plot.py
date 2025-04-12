@@ -13,9 +13,9 @@ def plot_training(history: dict) -> None:
 
 
 def plot_con_matrix(matrix: np.ndarray) -> None:
-    matrix_df = pd.DataFrame(matrix, columns=["positive", "negative"])
+    matrix_df = pd.DataFrame(matrix, columns=["ai", "real"])
 
-    matrix_df["predicted labels"] = "positive", "negative"
+    matrix_df["predicted labels"] = "real", "ai"
     matrix_df.set_index("predicted labels", inplace=True)
-    sns.heatmap(matrix_df.T, annot=True, fmt="d").set_ylabel("real labels")
+    sns.heatmap(matrix_df, annot=True, fmt="d").set_xlabel("real labels")
     plt.show()
