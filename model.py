@@ -14,14 +14,12 @@ from plot import plot_training as plt
 
 
 def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
-    tensorboard = TensorBoard(log_dir="logs")
-
     early_stopping = EarlyStopping(
         monitor="val_loss", patience=5, restore_best_weights=True, verbose=1
     )
 
     lr_schedule = ReduceLROnPlateau(
-        monitor="val_loss", factor=0.5, patience=3, min_lr=1e-6
+        monitor="val_loss", factor=0.5, patience=2, min_lr=1e-6
     )
 
     model = Sequential()
@@ -40,13 +38,13 @@ def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
     model.add(Dense(1, activation="sigmoid"))
     model.summary()
 
-    model.compile(Adam(1e-3), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
+    model.compile(Adam(5e-4), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
 
     hist = model.fit(
         train,
         epochs=30,
         validation_data=val,
-        callbacks=[early_stopping, lr_schedule, tensorboard],
+        callbacks=[early_stopping, lr_schedule],
     )
     model.save("model.keras")
     plt(hist.history)
