@@ -8,7 +8,7 @@ from plot import *
 
 
 def split_data(path: str) -> str:
-    dataset_path, flag = create_directory(path)
+    dataset_path, flag = create_directory(path=path)
     train_path_csv = glob(f"{dataset_path}/*.csv")[0]
     if flag:
         path = pd.read_csv(train_path_csv)
@@ -57,4 +57,4 @@ def con_matrix(dataset: tf.data.Dataset) -> None:
     pred = np.array(pred).flatten()
 
     matrix = confusion_matrix(labels, pred)
-    plot_con_matrix(matrix)
+    plot_con_matrix(matrix=matrix)

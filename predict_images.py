@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def predict_image(img_dir: str) -> None:
     files = tf.data.Dataset.list_files(img_dir)
 
-    def image(img_dir):
+    def image(img_dir: str) -> tf.Tensor:
         img = tf.io.read_file(img_dir)
         try:
             img = tf.image.decode_png(img, channels=3)
@@ -15,9 +15,9 @@ def predict_image(img_dir: str) -> None:
         img = tf.image.resize(img, (224, 224)) / 255
         return img
 
-    dataset = files.map(image)
+    dataset = files.map(img_dir=image)
 
-    model = tf.keras.models.load_model("finished_model.keras")
+    model = tf.keras.models.load_model("model.keras")
 
     pred = model.predict(dataset)
 

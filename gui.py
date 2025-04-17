@@ -11,7 +11,7 @@ def select_and_split() -> None:
     output_path = filedialog.askdirectory()
     path_entry.delete(0, "end")
     path_entry.insert(0, output_path)
-    split_data(output_path)
+    split_data(path=output_path)
 
 
 def evaluate_model() -> None:
@@ -19,19 +19,19 @@ def evaluate_model() -> None:
     classes = f"{Path(output_path).parent}/classes"
     model_entry.delete(0, "end")
     model_entry.insert(0, output_path)
-    preprocess_data(classes)
+    preprocess_data(classes_path=classes)
 
 
 def images() -> None:
     global output_path
     output_path = filedialog.askdirectory()
-    predict_image(f"{output_path}/*")
+    predict_image(img_dir=f"{output_path}/*")
 
 
 def image() -> None:
     global output_path
     output_path = filedialog.askopenfilename()
-    predict_image(output_path)
+    predict_image(img_dir=output_path)
 
 
 ctk.set_appearance_mode("dark")

@@ -1,5 +1,5 @@
 import tensorflow as tf
-from keras.callbacks import EarlyStopping, ReduceLROnPlateau, TensorBoard
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.layers import (
     Conv2D,
     Dense,
@@ -47,4 +47,4 @@ def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
         callbacks=[early_stopping, lr_schedule],
     )
     model.save("model.keras")
-    plt(hist.history)
+    plt(history=hist.history)
