@@ -46,7 +46,7 @@ def preprocess_data(classes_path: str, train: bool) -> None:
 
 
 def con_matrix(dataset: tf.data.Dataset) -> None:
-    model = tf.keras.models.load_model("model.keras")
+    model = tf.keras.models.load_model(glob('*keras')[0])
     pred = []
     labels = []
     for x, y in dataset.rebatch(len(dataset)):

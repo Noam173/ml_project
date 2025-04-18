@@ -38,7 +38,7 @@ def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
     model.add(Dense(1, activation="sigmoid"))
     model.summary()
 
-    model.compile(Adam(5e-4), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
+    model.compile(Adam(1e-3), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
 
     hist = model.fit(
         train,
