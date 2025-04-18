@@ -51,7 +51,7 @@ def con_matrix(dataset: tf.data.Dataset) -> None:
     pred = []
     labels = []
     for x, y in dataset:
-        pred.extend(model.predict(x).round())
+        pred.extend(model.predict(x, verbose=0).round())
         labels.extend(y)
 
     labels = np.array(labels).flatten()
