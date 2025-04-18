@@ -1,5 +1,5 @@
 import tensorflow as tf
-import matplotlib.pyplot as plt
+from plot import plot_images as plt
 
 
 def predict_image(img_dir: str) -> None:
@@ -21,9 +21,4 @@ def predict_image(img_dir: str) -> None:
 
     pred = model.predict(dataset)
 
-    for i, file in enumerate(files.as_numpy_iterator()):
-        file = file.decode("utf-8")
-        plt.imshow(plt.imread(file))
-        print("real" if pred.round()[i] == 1 else "ai")
-        plt.show()
-        print("=" * 300)
+    plt(pred=pred, files=files)

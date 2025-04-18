@@ -42,14 +42,15 @@ def preprocess_data(classes_path: str, train: bool) -> None:
         model(train=train, val=val)
     else:
         test = data.skip(train_size + val_size).prefetch(tf.data.AUTOTUNE)
+        test = test.rebatch(len(test))
         print(con_matrix(dataset=test))
 
 
 def con_matrix(dataset: tf.data.Dataset) -> None:
-    model = tf.keras.models.load_model(glob('*keras')[0])
+    model = tf.keras.models.load_model(glob("*keras")[0])
     pred = []
     labels = []
-    for x, y in dataset.rebatch(len(dataset)):
+    for x, y in dataset:
         pred.extend(model.predict(x).round())
         labels.extend(y)
 

@@ -1,5 +1,6 @@
 import pandas as pd
 import seaborn as sns
+import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -19,3 +20,12 @@ def plot_con_matrix(matrix: np.ndarray) -> None:
     matrix_df.set_index("predicted labels", inplace=True)
     sns.heatmap(matrix_df, annot=True, fmt="d").set_xlabel("real labels")
     plt.show()
+
+
+def plot_images(pred: np.ndarray, files: tf.data.Dataset) -> None:
+    for i, file in enumerate(files):
+        file = file.decode("utf-8")
+        plt.imshow(plt.imread(file))
+        print("real" if pred.round()[i] == 1 else "ai")
+        plt.show()
+        print("=" * 300)
