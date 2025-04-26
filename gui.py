@@ -19,7 +19,7 @@ def evaluate_train_model() -> None:
     try:
         classes = output_path / "classes"
         preprocess_data(classes_path=classes, model_path=model_path, exist=exist)
-    except Exception as e:
+    except Exception:
         messagebox.showerror(
             "Error", "Please select a training path and/or a valid model."
         )
