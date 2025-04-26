@@ -3,6 +3,14 @@ from tkinter import filedialog, messagebox
 import customtkinter as ctk
 from Data_Manipulation import *
 from predict_images import predict_image
+import webbrowser
+
+
+def Sources() -> None:
+    webbrowser.open_new("https://github.com/Noam173/ml_project")
+    webbrowser.open_new(
+        "https://drive.google.com/drive/folders/1I95Et_yUEY6wfb448SblguYiJxTnnjP7"
+    )
 
 
 def select_and_split() -> None:
@@ -58,18 +66,16 @@ def pred_images() -> None:
     predict_image(img_dir=img_dir, model=model_path)
 
 
-# ========== GUI STYLING ==========
-
 ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("blue")  # You can change to "green", "dark-blue", etc.
+ctk.set_default_color_theme("blue")
 
 window = ctk.CTk()
 window.title("Noam's Project GUI")
 window.geometry("900x550")
-window.resizable(False, False)
-window.configure(bg="#121212")  # Darker background
+window.resizable(True, True)
+window.configure(bg="black")
 
-frame = ctk.CTkFrame(window, corner_radius=15, fg_color="#1E1E1E")
+frame = ctk.CTkFrame(window, corner_radius=15)
 frame.pack(fill="both", expand=True, padx=30, pady=30)
 
 title = ctk.CTkLabel(
@@ -123,7 +129,7 @@ model_button.grid(row=0, column=1, padx=10)
 
 predict_button = ctk.CTkButton(
     frame,
-    text="Predict Image(s)",
+    text="evaluate/train a model",
     command=evaluate_train_model,
     corner_radius=10,
     hover_color="purple",
@@ -140,13 +146,22 @@ documentation_text = ctk.CTkTextbox(
     font=("Courier", 12),
     text_color="white",
 )
+sources_link = ctk.CTkButton(
+    frame,
+    text="GitHub repo and dataset",
+    command=Sources,
+    font=("Arial", 14, "underline"),
+)
+sources_link.pack(pady=5)
+
 documentation_text.pack(pady=10)
 documentation_text.insert(
     "0.0",
-    "This GUI is part of my final project\n"
-    "in Computer Science in Machine Learning.\n\n"
-    "Credits and Source Code:\n"
+    "This GUI is part of my project\n"
+    "in Machine Learning.\n\n"
+    "Dataset and Source Code:\n"
     "GitHub (source code)\n",
+    "Dataset (from kaggle.com), google drive",
 )
 
 window.mainloop()
