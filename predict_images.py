@@ -2,7 +2,7 @@ import tensorflow as tf
 from plot import plot_images as plt
 
 
-def predict_image(img_dir: str, model) -> None:
+def predict_image(img_dir: str, model: str) -> None:
     files = tf.data.Dataset.list_files(img_dir)
 
     def image(img_dir: str) -> tf.Tensor:

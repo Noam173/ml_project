@@ -4,6 +4,7 @@ import tensorflow as tf
 from Reset_data import *
 from sklearn.metrics import confusion_matrix
 from plot import *
+from model import create_model as model
 
 
 def split_data(path: str) -> str:
@@ -25,7 +26,7 @@ def split_data(path: str) -> str:
     collect()
 
 
-def preprocess_data(classes_path: str, model, train: bool = False) -> None:
+def preprocess_data(classes_path: str, model_path: str, exist: bool) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
         classes_path, shuffle=True, seed=42, image_size=(224, 224), batch_size=16
     ).map(lambda x, y: (x / 255.0, y))
@@ -35,14 +36,14 @@ def preprocess_data(classes_path: str, model, train: bool = False) -> None:
     train_size = round(size * 0.7)
     val_size = round(size * 0.2)
 
-    if train:
+    if not exist:
         train = data.take(train_size).prefetch(tf.data.AUTOTUNE)
         val = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE).cache()
         model(train=train, val=val)
     else:
         test = data.skip(train_size + val_size).prefetch(tf.data.AUTOTUNE)
         test = test.rebatch(len(test))
-        print(con_matrix(dataset=test, model=model))
+        print(con_matrix(dataset=test, model=model_path))
 
 
 def con_matrix(dataset: tf.data.Dataset, model) -> None:

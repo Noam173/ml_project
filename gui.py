@@ -1,6 +1,5 @@
 from pathlib import Path
 from tkinter import filedialog, messagebox
-
 import customtkinter as ctk
 from Data_Manipulation import *
 from predict_images import predict_image
@@ -12,90 +11,142 @@ def select_and_split() -> None:
     path_entry.delete(0, "end")
     path_entry.insert(0, output_path)
     split_data(path=output_path)
+    output_path = Path(output_path).parent
 
 
-def evaluate_model() -> None:
-    global output_path, model
-    classes = f"{Path(output_path).parent}/classes"
-    model = filedialog.askopenfilename(filetypes=[("Keras Model Files", "*.keras")])
-    model_entry.delete(0, "end")
-    model_entry.insert(0, output_path)
-    preprocess_data(classes_path=classes, model=model)
+def evaluate_train_model() -> None:
+    global output_path, model_path, exist
+    try:
+        classes = output_path / "classes"
+        preprocess_data(classes_path=classes, model_path=model_path, exist=exist)
+    except Exception as e:
+        messagebox.showerror(
+            "Error", "Please select a training path and/or a valid model."
+        )
+        return
+
+
+def model() -> None:
+    global model_path, exist
+    flag = messagebox.askquestion("Model Availability", "Do you have a model?")
+    if flag == "yes":
+        model_path = filedialog.askopenfilename(
+            filetypes=[("Keras Model Files", "*.keras")]
+        )
+        model_entry.delete(0, "end")
+        model_entry.insert(0, model_path)
+        exist = True
+    else:
+        model_path = ""
+        model_entry.delete(0, "end")
+        model_entry.insert(0, 'No model selected. Press "Load Model" to train.')
+        exist = False
 
 
 def pred_images() -> None:
-    global output_path, model
-    model = model
-    flag = messagebox.askquestion("load a folder?")
+    global model_path, exist
+    if not exist:
+        messagebox.showerror("Model Error", "Please select a valid model path.")
+        return
+    flag = messagebox.askquestion("Folder Selection", "Load a folder?")
     if flag == "yes":
-        output_path = filedialog.askdirectory()
-        predict_image(img_dir=f"{output_path}/*", model=model)
+        img_dir = f"{filedialog.askdirectory()}/*"
     else:
-        output_path = filedialog.askopenfilename(
+        img_dir = filedialog.askopenfilename(
             filetypes=[("Image Files", "*.png *.jpg *.jpeg *.bmp")]
         )
-        predict_image(img_dir=output_path, model=model)
+    predict_image(img_dir=img_dir, model=model_path)
 
+
+# ========== GUI STYLING ==========
 
 ctk.set_appearance_mode("dark")
+ctk.set_default_color_theme("blue")  # You can change to "green", "dark-blue", etc.
+
 window = ctk.CTk()
-window.title("Noam's project gui")
-window.geometry("862x519")
-window.resizable(True, True)
-window.configure(bg="black")
+window.title("Noam's Project GUI")
+window.geometry("900x550")
+window.resizable(False, False)
+window.configure(bg="#121212")  # Darker background
 
-frame = ctk.CTkFrame(window, corner_radius=15)
-frame.pack(fill="both", expand=True, padx=20, pady=20)
+frame = ctk.CTkFrame(window, corner_radius=15, fg_color="#1E1E1E")
+frame.pack(fill="both", expand=True, padx=30, pady=30)
 
-title = ctk.CTkLabel(frame, text="Welcome", font=("Arial Bold", 20))
-title.pack(pady=10)
-
-image_label = ctk.CTkButton(
+title = ctk.CTkLabel(
     frame,
-    text="predict_image(s)",
-    cursor="hand2",
-    command=pred_images,
-    hover_color="purple",
+    text="Welcome to Noam's Machine Learning Project",
+    font=("Arial Rounded MT Bold", 24),
+    text_color="white",
 )
-image_label.pack(side="left", padx=50)
+title.pack(pady=(20, 10))
 
 path_entry = ctk.CTkEntry(
-    frame, placeholder_text="Load the and split the data", corner_radius=10
+    frame,
+    placeholder_text="Load and split the data",
+    corner_radius=10,
+    width=600,
+    font=("Arial", 14),
 )
-path_entry.pack(pady=20, fill="x", padx=20)
+path_entry.pack(pady=10)
 
-model_entry = ctk.CTkEntry(frame, placeholder_text="model's file", corner_radius=10)
-model_entry.pack(pady=20, fill="x", padx=20)
+model_entry = ctk.CTkEntry(
+    frame,
+    placeholder_text="Model's file path",
+    corner_radius=10,
+    width=600,
+    font=("Arial", 14),
+)
+model_entry.pack(pady=10)
+
+button_frame = ctk.CTkFrame(frame, fg_color="transparent")
+button_frame.pack(pady=20)
 
 path_button = ctk.CTkButton(
-    frame,
-    text="Select the data's path",
+    button_frame,
+    text="Select Data Path",
     command=select_and_split,
-    hover_color="purple",
     corner_radius=10,
+    width=200,
+    hover_color="purple",
 )
-path_button.pack(pady=10)
+path_button.grid(row=0, column=0, padx=10)
 
 model_button = ctk.CTkButton(
-    frame,
-    text="Evaluate model",
-    hover_color="purple",
-    command=evaluate_model,
+    button_frame,
+    text="Load Model",
+    command=model,
     corner_radius=10,
+    width=200,
+    hover_color="purple",
 )
-model_button.pack(pady=10)
+model_button.grid(row=0, column=1, padx=10)
 
-documention_text = ctk.CTkTextbox(frame, width=300, height=175, corner_radius=10)
-documention_text.pack()
-documention_text.insert(
-    "0.0", "My GUI for the final project in Computer Science, Machine Learning,\n"
+predict_button = ctk.CTkButton(
+    frame,
+    text="Predict Image(s)",
+    command=evaluate_train_model,
+    corner_radius=10,
+    hover_color="purple",
+    font=("Arial Bold", 14),
+    width=300,
 )
-documention_text.insert("end", "\n")
-documention_text.insert(
-    "end", "Attributes for the book and GitHub page for the source code below:\n"
+predict_button.pack(pady=20)
+
+documentation_text = ctk.CTkTextbox(
+    frame,
+    width=600,
+    height=150,
+    corner_radius=10,
+    font=("Courier", 12),
+    text_color="white",
 )
-documention_text.insert("end", "\n")
-documention_text.insert("end", "GitHub (source code)\n")
-documention_text.insert("end", "\n")
+documentation_text.pack(pady=10)
+documentation_text.insert(
+    "0.0",
+    "This GUI is part of my final project\n"
+    "in Computer Science in Machine Learning.\n\n"
+    "Credits and Source Code:\n"
+    "GitHub (source code)\n",
+)
 
 window.mainloop()
