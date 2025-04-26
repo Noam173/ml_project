@@ -3,7 +3,6 @@ from glob import glob
 import tensorflow as tf
 from Reset_data import *
 from sklearn.metrics import confusion_matrix
-from model import create_model as model
 from plot import *
 
 

@@ -7,7 +7,7 @@ import numpy as np
 
 def plot_training(history: dict) -> None:
     data = pd.DataFrame(history).shift(1)
-    data.columns=data.columns.str.lower()
+    data.columns = data.columns.str.lower()
 
     data.plot(y=["accuracy", "val_accuracy"])
 

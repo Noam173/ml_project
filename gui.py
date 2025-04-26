@@ -25,13 +25,15 @@ def evaluate_model() -> None:
 
 def pred_images() -> None:
     global output_path, model
-    model=model
-    flag=messagebox.askquestion('load a folder?')
-    if flag=='yes':
+    model = model
+    flag = messagebox.askquestion("load a folder?")
+    if flag == "yes":
         output_path = filedialog.askdirectory()
         predict_image(img_dir=f"{output_path}/*", model=model)
     else:
-        output_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg *.bmp")])
+        output_path = filedialog.askopenfilename(
+            filetypes=[("Image Files", "*.png *.jpg *.jpeg *.bmp")]
+        )
         predict_image(img_dir=output_path, model=model)
 
 
@@ -49,7 +51,11 @@ title = ctk.CTkLabel(frame, text="Welcome", font=("Arial Bold", 20))
 title.pack(pady=10)
 
 image_label = ctk.CTkButton(
-    frame, text="predict_image(s)", cursor="hand2", command=pred_images, hover_color="purple"
+    frame,
+    text="predict_image(s)",
+    cursor="hand2",
+    command=pred_images,
+    hover_color="purple",
 )
 image_label.pack(side="left", padx=50)
 

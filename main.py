@@ -11,4 +11,3 @@ label.pack(pady=50)  # Add some padding for aesthetics
 
 # Run the application
 root.mainloop()
-
