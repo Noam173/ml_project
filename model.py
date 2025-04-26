@@ -27,10 +27,10 @@ def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
 
     model.add(Conv2D(32, (3, 3), padding="same", activation="relu"))
     model.add(Conv2D(64, (3, 3), padding="same", activation="relu"))
-    model.add(MaxPooling2D((2, 2), 2))
+    model.add(MaxPooling2D())
 
     model.add(Conv2D(128, (3, 3), padding="same", activation="relu"))
-    model.add(MaxPooling2D((2, 2), 2))
+    model.add(MaxPooling2D())
 
     model.add(GlobalAveragePooling2D())
     model.add(Dense(512, activation="relu"))

@@ -7,6 +7,7 @@ import numpy as np
 
 def plot_training(history: dict) -> None:
     data = pd.DataFrame(history).shift(1)
+    data.columns=data.columns.str.lower()
 
     data.plot(y=["accuracy", "val_accuracy"])
 
@@ -24,7 +25,7 @@ def plot_con_matrix(matrix: np.ndarray) -> None:
 
 def plot_images(pred: np.ndarray, files: tf.data.Dataset) -> None:
     for i, file in enumerate(files):
-        file = file.decode("utf-8")
+        file = file.numpy().decode("utf-8")
         plt.imshow(plt.imread(file))
         print("real" if pred.round()[i] == 1 else "ai")
         plt.show()

@@ -26,7 +26,7 @@ def split_data(path: str) -> str:
     collect()
 
 
-def preprocess_data(classes_path: str, train: bool) -> None:
+def preprocess_data(classes_path: str, model, train: bool = False) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
         classes_path, shuffle=True, seed=42, image_size=(224, 224), batch_size=16
     ).map(lambda x, y: (x / 255.0, y))
@@ -43,11 +43,11 @@ def preprocess_data(classes_path: str, train: bool) -> None:
     else:
         test = data.skip(train_size + val_size).prefetch(tf.data.AUTOTUNE)
         test = test.rebatch(len(test))
-        print(con_matrix(dataset=test))
+        print(con_matrix(dataset=test, model=model))
 
 
-def con_matrix(dataset: tf.data.Dataset) -> None:
-    model = tf.keras.models.load_model(glob("*keras")[0])
+def con_matrix(dataset: tf.data.Dataset, model) -> None:
+    model = tf.keras.models.load_model(model)
     pred = []
     labels = []
     for x, y in dataset:

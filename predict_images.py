@@ -2,7 +2,7 @@ import tensorflow as tf
 from plot import plot_images as plt
 
 
-def predict_image(img_dir: str) -> None:
+def predict_image(img_dir: str, model) -> None:
     files = tf.data.Dataset.list_files(img_dir)
 
     def image(img_dir: str) -> tf.Tensor:
@@ -15,9 +15,9 @@ def predict_image(img_dir: str) -> None:
         img = tf.image.resize(img, (224, 224)) / 255
         return img
 
-    dataset = files.map(img_dir=image)
+    dataset = files.map(image)
 
-    model = tf.keras.models.load_model("model.keras")
+    model = tf.keras.models.load_model(model)
 
     pred = model.predict(dataset)
 

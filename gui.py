@@ -1,5 +1,5 @@
 from pathlib import Path
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
 from Data_Manipulation import *
@@ -15,23 +15,24 @@ def select_and_split() -> None:
 
 
 def evaluate_model() -> None:
-    global output_path
+    global output_path, model
     classes = f"{Path(output_path).parent}/classes"
+    model = filedialog.askopenfilename(filetypes=[("Keras Model Files", "*.keras")])
     model_entry.delete(0, "end")
     model_entry.insert(0, output_path)
-    preprocess_data(classes_path=classes)
+    preprocess_data(classes_path=classes, model=model)
 
 
-def images() -> None:
-    global output_path
-    output_path = filedialog.askdirectory()
-    predict_image(img_dir=f"{output_path}/*")
-
-
-def image() -> None:
-    global output_path
-    output_path = filedialog.askopenfilename()
-    predict_image(img_dir=output_path)
+def pred_images() -> None:
+    global output_path, model
+    model=model
+    flag=messagebox.askquestion('load a folder?')
+    if flag=='yes':
+        output_path = filedialog.askdirectory()
+        predict_image(img_dir=f"{output_path}/*", model=model)
+    else:
+        output_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg *.bmp")])
+        predict_image(img_dir=output_path, model=model)
 
 
 ctk.set_appearance_mode("dark")
@@ -48,18 +49,9 @@ title = ctk.CTkLabel(frame, text="Welcome", font=("Arial Bold", 20))
 title.pack(pady=10)
 
 image_label = ctk.CTkButton(
-    frame, text="predict_image", cursor="hand2", command=image, hover_color="purple"
+    frame, text="predict_image(s)", cursor="hand2", command=pred_images, hover_color="purple"
 )
 image_label.pack(side="left", padx=50)
-
-images_label = ctk.CTkButton(
-    frame,
-    text="predict_images (folder)",
-    cursor="hand2",
-    command=images,
-    hover_color="purple",
-)
-images_label.pack(side="right", padx=50)
 
 path_entry = ctk.CTkEntry(
     frame, placeholder_text="Load the and split the data", corner_radius=10
