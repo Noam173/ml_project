@@ -29,4 +29,4 @@ def plot_images(pred: np.ndarray, files: tf.data.Dataset) -> None:
         plt.imshow(plt.imread(file))
         print("real" if pred.round()[i] == 1 else "ai")
         plt.show()
-        print("=" * 300)
+        print("=" * 100)
