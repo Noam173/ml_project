@@ -27,6 +27,8 @@ def plot_images(pred: np.ndarray, files: tf.data.Dataset) -> None:
     for i, file in enumerate(files):
         file = file.numpy().decode("utf-8")
         plt.imshow(plt.imread(file))
-        print("real" if pred.round()[i] == 1 else "ai")
+        label = "real" if pred.round()[i] == 1 else "ai"
+        plt.title(f'predicted {label}')
+        plt.axis('off')
         plt.show()
         print("=" * 100)
