@@ -1,6 +1,7 @@
 from gc import collect
 from pathlib import Path
 
+
 def create_directory(path: str) -> tuple[str, bool]:
     collect()
     dataset_path = Path(path).parent.as_posix()
