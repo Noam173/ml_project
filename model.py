@@ -3,7 +3,6 @@ from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.layers import (
     Conv2D,
     Dense,
-    Dropout,
     GlobalAveragePooling2D,
     Input,
     MaxPooling2D,
@@ -34,11 +33,10 @@ def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
 
     model.add(GlobalAveragePooling2D())
     model.add(Dense(512, activation="relu"))
-    model.add(Dropout(0.5))
     model.add(Dense(1, activation="sigmoid"))
     model.summary()
 
-    model.compile(Adam(1e-3), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
+    model.compile(Adam(5e-4), loss=tf.losses.binary_crossentropy, metrics=["accuracy"])
 
     hist = model.fit(
         train,

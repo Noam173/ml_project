@@ -2,7 +2,6 @@ import shutil
 from glob import glob
 import tensorflow as tf
 from Reset_data import *
-from sklearn.metrics import confusion_matrix
 from plot import *
 from model import create_model as model
 
@@ -57,5 +56,5 @@ def con_matrix(dataset: tf.data.Dataset, model) -> None:
     labels = np.array(labels).flatten()
     pred = np.array(pred).flatten()
 
-    matrix = confusion_matrix(labels, pred)
+    matrix = tf.math.confusion_matrix(labels, pred)
     plot_con_matrix(matrix=matrix)
