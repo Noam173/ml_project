@@ -29,7 +29,8 @@ def evaluate_train_model() -> None:
         preprocess_data(classes_path=classes, model_path=model_path)
     except:
         messagebox.showerror(
-            "Error", "please first select valid 'model' option or/and valid dataset path."
+            "Error",
+            "please first select valid 'model' option or/and valid dataset path.",
         )
         return
 

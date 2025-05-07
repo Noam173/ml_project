@@ -1,14 +1,14 @@
 import tensorflow as tf
-from keras.callbacks import EarlyStopping, ReduceLROnPlateau
-from keras.layers import (
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.layers import (
     Conv2D,
     Dense,
     GlobalAveragePooling2D,
     Input,
     MaxPooling2D,
 )
-from keras.models import Sequential
-from keras.optimizers import Adam
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
 from plot import plot_training as plt
 
 
