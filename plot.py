@@ -31,4 +31,3 @@ def plot_images(pred: np.ndarray, files: tf.data.Dataset) -> None:
         plt.title(f"predicted {label}")
         plt.axis("off")
         plt.show()
-        print("=" * 100)
