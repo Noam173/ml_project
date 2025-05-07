@@ -23,19 +23,19 @@ def select_and_split() -> None:
 
 
 def evaluate_train_model() -> None:
-    global output_path, model_path, exist
+    global output_path, model_path
     try:
-        classes = output_path / "classes"
-        preprocess_data(classes_path=classes, model_path=model_path, exist=exist)
+        classes = str(output_path / "classes")
+        preprocess_data(classes_path=classes, model_path=model_path)
     except:
         messagebox.showerror(
-            "Error", "Please select a training path and/or a valid model."
+            "Error", "please first select valid 'model' option or/and valid dataset path."
         )
         return
 
 
 def model() -> None:
-    global model_path, exist
+    global model_path
     flag = messagebox.askquestion("Model Availability", "Do you have a model?")
     if flag == "yes":
         model_path = filedialog.askopenfilename(
@@ -43,18 +43,16 @@ def model() -> None:
         )
         model_entry.delete(0, "end")
         model_entry.insert(0, model_path)
-        exist = True
     else:
-        model_path = ""
+        model_path = None
         model_entry.delete(0, "end")
-        model_entry.insert(0, 'No model selected. Press "Load Model" to train.')
-        exist = False
+        model_entry.insert(0, 'No model selected. Press "train a Model" to train.')
 
 
 def pred_images() -> None:
-    global model_path, exist
+    global model_path
     try:
-        if not exist:
+        if not model_path:
             raise Exception
     except:
         messagebox.showerror("Model Error", "Please select a valid model path.")

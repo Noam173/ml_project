@@ -25,7 +25,7 @@ def split_data(path: str) -> str:
     collect()
 
 
-def preprocess_data(classes_path: str, model_path: str, exist: bool) -> None:
+def preprocess_data(classes_path: str, model_path: str = None) -> None:
     data = tf.keras.utils.image_dataset_from_directory(
         classes_path, shuffle=True, seed=42, image_size=(224, 224), batch_size=16
     ).map(lambda x, y: (x / 255.0, y))
@@ -35,9 +35,9 @@ def preprocess_data(classes_path: str, model_path: str, exist: bool) -> None:
     train_size = round(size * 0.7)
     val_size = round(size * 0.2)
 
-    if not exist:
+    if not model_path:
         train = data.take(train_size).prefetch(tf.data.AUTOTUNE)
-        val = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE).cache()
+        val = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE)
         model(train=train, val=val)
     else:
         test = data.skip(train_size + val_size).prefetch(tf.data.AUTOTUNE)
