@@ -1,7 +1,7 @@
 from pathlib import Path
 from tkinter import filedialog, messagebox
 import customtkinter as ctk
-from Data_Manipulation import *
+from Data_Manipulation import split_data, preprocess_data
 from predict_images import predict_image
 import webbrowser
 
@@ -27,7 +27,7 @@ def evaluate_train_model() -> None:
     try:
         classes = str(output_path / "classes")
         preprocess_data(classes_path=classes, model_path=model_path)
-    except:
+    except Exception:
         messagebox.showerror(
             "Error",
             "please first select valid 'model' option or/and valid dataset path.",
@@ -52,10 +52,7 @@ def model() -> None:
 
 def pred_images() -> None:
     global model_path
-    try:
-        if not model_path:
-            raise Exception
-    except:
+    if not model_path:
         messagebox.showerror("Model Error", "Please select a valid model path.")
         return
     flag = messagebox.askquestion("Folder Selection", "Load a folder?")

@@ -4,6 +4,7 @@ import tensorflow as tf
 from Reset_data import create_directory
 from plot import plot_con_matrix
 import pandas as pd
+import numpy as np
 from model import create_model as model
 
 
