@@ -6,6 +6,7 @@ from tensorflow.keras.layers import (
     GlobalAveragePooling2D,
     Input,
     MaxPooling2D,
+    Dropout,
 )
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
@@ -33,6 +34,7 @@ def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
 
     model.add(GlobalAveragePooling2D())
     model.add(Dense(512, activation="relu"))
+    model.add(Dropout(0.5))
     model.add(Dense(1, activation="sigmoid"))
     model.summary()
 

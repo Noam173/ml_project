@@ -26,7 +26,7 @@ def split_data(path: str) -> None:
 
 
 def preprocess_data(classes_path: str, model_path: str = None) -> None:
-    data:tf.data.Dataset = tf.keras.utils.image_dataset_from_directory(
+    data: tf.data.Dataset = tf.keras.utils.image_dataset_from_directory(
         classes_path, shuffle=True, seed=42, image_size=(224, 224), batch_size=16
     ).map(lambda x, y: (x / 255.0, tf.cast(y, dtype=tf.int8)))
 
@@ -36,12 +36,14 @@ def preprocess_data(classes_path: str, model_path: str = None) -> None:
     val_size: int = round(size * 0.2)
 
     if model_path:
-        test:tf.data.Dataset = data.skip(train_size + val_size)
-        test:tf.data.Dataset = test.rebatch(len(test)).prefetch(tf.data.AUTOTUNE)
+        test: tf.data.Dataset = data.skip(train_size + val_size)
+        test: tf.data.Dataset = test.rebatch(len(test)).prefetch(tf.data.AUTOTUNE)
         print(con_matrix(dataset=test, model=model_path))
     else:
-        train:tf.data.Dataset = data.take(train_size).prefetch(tf.data.AUTOTUNE)
-        val:tf.data.Dataset = data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE)
+        train: tf.data.Dataset = data.take(train_size).prefetch(tf.data.AUTOTUNE)
+        val: tf.data.Dataset = (
+            data.skip(train_size).take(val_size).prefetch(tf.data.AUTOTUNE)
+        )
         model(train=train, val=val)
 
 
@@ -53,8 +55,8 @@ def con_matrix(dataset: tf.data.Dataset, model: str) -> None:
         pred.extend(model.predict(x, verbose=0).round())
         labels.extend(y)
 
-    labels = np.array(labels,dtype=np.int8).flatten()
-    pred = np.array(pred,dtype=np.int8).flatten()
+    labels = np.array(labels, dtype=np.int8).flatten()
+    pred = np.array(pred, dtype=np.int8).flatten()
 
-    matrix:tf.math = tf.math.confusion_matrix(labels, pred)
+    matrix: tf.math = tf.math.confusion_matrix(labels, pred)
     plot_con_matrix(matrix=matrix)
