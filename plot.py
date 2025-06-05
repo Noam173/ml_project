@@ -13,6 +13,8 @@ def plot_training(history: dict) -> None:
 
     data.plot(y=["loss", "val_loss"])
 
+    plt.show()
+
 
 def plot_con_matrix(matrix: np.ndarray) -> None:
     matrix_df = pd.DataFrame(matrix, columns=["ai", "real"])
