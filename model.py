@@ -47,4 +47,4 @@ def create_model(train: tf.data.Dataset, val: tf.data.Dataset) -> None:
         callbacks=[early_stopping, lr_schedule],
     )
     model.save("model.keras")
-    plt(history=hist.history)
+    print(plt(history=hist.history))

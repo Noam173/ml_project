@@ -21,4 +21,4 @@ def predict_image(img_dir: str, model: str) -> None:
 
     pred = model.predict(dataset)
 
-    plt(pred=pred, files=files)
+    print(plt(pred=pred, files=files))
