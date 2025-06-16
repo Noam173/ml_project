@@ -1,4 +1,4 @@
-tensorflow[and-cuda]
+tensorflow
 pandas
 seaborn
 customtkinter
