@@ -1,3 +1,5 @@
+#!/usr/bin/env -S uv run
+
 from pathlib import Path
 from tkinter import filedialog, messagebox
 import customtkinter as ctk
