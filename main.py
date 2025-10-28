@@ -1,4 +1,10 @@
 #!/usr/bin/env -S uv run
+import subprocess as sub
+
+try:
+    sub.run(["uv", "add", "-r", "requirements.txt"], check=True)
+except:
+    sub.run(["pip", "install", "-r", "requirements.txt"], check=True)
 
 from pathlib import Path
 from tkinter import filedialog, messagebox
