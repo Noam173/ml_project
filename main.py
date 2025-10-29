@@ -2,9 +2,9 @@
 import subprocess as sub
 
 try:
-    sub.run(["uv", "add", "-r", "requirements.txt"], check=True)
+    sub.run("uv add -r requirements.txt", shell=True, check=True)
 except:
-    sub.run(["pip", "install", "-r", "requirements.txt"], check=True)
+    sub.run("pip install -r requirements.txt", shell=True, check=True)
 
 from pathlib import Path
 from tkinter import filedialog, messagebox
