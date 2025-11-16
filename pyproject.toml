@@ -8,5 +8,6 @@ dependencies = [
     "customtkinter>=5.2.2",
     "pandas>=2.3.3",
     "seaborn>=0.13.2",
-    "tensorflow[and-cuda]>=2.20.0",
+    "tensorflow[and-cuda]>=2.20.0; sys_platform !='win32'",
+    "tensorflow>=2.20.0; sys_platform == 'win32'"
 ]
